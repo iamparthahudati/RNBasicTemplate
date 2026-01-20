@@ -10,8 +10,18 @@ import { useEffect } from 'react';
 import { Alert, StatusBar } from 'react-native';
 import RootNavigator from './src/navigation/RootNavigator';
 import { isFirebaseReady } from './src/services/firebase';
-
+import {
+  listenForegroundNotifications,
+  requestNotificationPermission,
+} from './src/services/notifications';
 function App() {
+  useEffect(() => {
+    requestNotificationPermission();
+
+    const unsubscribe = listenForegroundNotifications();
+    return unsubscribe;
+  }, []);
+
   useEffect(() => {
     const ready = isFirebaseReady();
 

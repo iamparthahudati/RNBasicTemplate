@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Image, Text, View } from 'react-native';
+import { Alert, Button, Image, Text, View } from 'react-native';
 import { Images } from '../assets';
+import { getFcmToken } from '../services/notifications';
 import { useAppStore, useThemeStore } from '../store';
 
 export default function HomeScreen() {
@@ -19,6 +20,13 @@ export default function HomeScreen() {
       />
       <Button title="Light Theme" onPress={() => setMode('light')} />
       <Button title="Dark Theme" onPress={() => setMode('dark')} />
+      <Button
+        title="Get FCM Token"
+        onPress={async () => {
+          const token = await getFcmToken();
+          Alert.alert('FCM Token', token ?? 'No token');
+        }}
+      />
     </View>
   );
 }

@@ -1,29 +1,22 @@
-import { API_BASE_URL } from '@env';
-import React, { useEffect } from 'react';
-import { Alert, Text, View } from 'react-native';
-import api from '../api/axios';
+import React from 'react';
+import { Button, Text, View } from 'react-native';
+import { useAppStore, useThemeStore } from '../store';
 
 export default function HomeScreen() {
-  useEffect(() => {
-    Alert.alert('Env Check');
-    Alert.alert('Env Check', `API_BASE_URL = ${API_BASE_URL}`);
-
-    api
-      .get('/')
-      .then(() => {
-        Alert.alert('Axios Check', '✅ Axios instance is working');
-      })
-      .catch(() => {
-        Alert.alert(
-          'Axios Check',
-          '⚠️ Axios is working (API not reachable, which is OK)',
-        );
-      });
-  }, []);
+  const { hasOnboarded, setOnboarded } = useAppStore();
+  const { mode, setMode } = useThemeStore();
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 20 }}>HOME SCREEN LOADED</Text>
+    <View>
+      <Text>Onboarded: {String(hasOnboarded)}</Text>
+      <Text>Theme: {mode}</Text>
+
+      <Button
+        title="Toggle Onboarded"
+        onPress={() => setOnboarded(!hasOnboarded)}
+      />
+      <Button title="Light Theme" onPress={() => setMode('light')} />
+      <Button title="Dark Theme" onPress={() => setMode('dark')} />
     </View>
   );
 }
